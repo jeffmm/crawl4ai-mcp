@@ -1,4 +1,7 @@
+import io
+import sys
 from collections.abc import AsyncIterator
+from contextlib import redirect_stdout
 from urllib.parse import quote
 
 from crawl4ai import (
@@ -88,10 +91,13 @@ async def google_search(query: str) -> MCPCrawlResult:
     )
     try:
         async with AsyncWebCrawler(config=settings.browser_config) as crawler:
-            result = await crawler.arun(
-                f"https://www.google.com/search?q={quote(query)}&start=0&num=10",
-                config=crawl_config,
-            )
+            with redirect_stdout(
+                io.TextIOWrapper(sys.stderr.buffer, encoding=sys.stderr.encoding)
+            ):
+                result = await crawler.arun(
+                    f"https://www.google.com/search?q={quote(query)}&start=0&num=10",
+                    config=crawl_config,
+                )
             return handle_crawl_result(result)
     except Exception as e:
         # Catch any exceptions that occur during the search
@@ -150,7 +156,10 @@ async def deep_crawl(
     # Explicit lifecycle management for the crawler is recommended for long-running tasks
     crawler = AsyncWebCrawler(config=settings.browser_config)
     try:
-        pages = await crawler.arun(url, config=crawl_config)
+        with redirect_stdout(
+            io.TextIOWrapper(sys.stderr.buffer, encoding=sys.stderr.encoding)
+        ):
+            pages = await crawler.arun(url, config=crawl_config)
         if not isinstance(pages, AsyncIterator):
             return [
                 MCPCrawlResult(
@@ -211,7 +220,10 @@ async def crawl(urls: list[str]) -> list[MCPCrawlResult]:
     results: list[MCPCrawlResult] = []
     try:
         async with AsyncWebCrawler(config=settings.browser_config) as crawler:
-            pages = await crawler.arun_many(urls=urls, config=run_cfg)
+            with redirect_stdout(
+                io.TextIOWrapper(sys.stderr.buffer, encoding=sys.stderr.encoding)
+            ):
+                pages = await crawler.arun_many(urls=urls, config=run_cfg)
             if not isinstance(pages, AsyncIterator):
                 return [
                     MCPCrawlResult(
