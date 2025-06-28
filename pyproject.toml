@@ -24,7 +24,12 @@ bump = true
 
 
 [dependency-groups]
-dev = ["pre-commit>=4.2.0", "pytest>=8.4.0", "pytest-cov>=6.2.1"]
+dev = [
+  "pre-commit>=4.2.0",
+  "pytest>=8.4.0",
+  "pytest-asyncio>=1.0.0",
+  "pytest-cov>=6.2.1",
+]
 
 [tool.coverage.run]
 source = ["src"]
@@ -43,7 +48,13 @@ exclude_lines = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
-addopts = "-v --cov=project_context"
+addopts = "-v --cov=crawl4ai_mcp"
+asyncio_mode = "auto"
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+namespace_packages = true
 
 [[tool.mypy.overrides]]
 module = ["crawl4ai", "crawl4ai.models", "crawl4ai.types"]
