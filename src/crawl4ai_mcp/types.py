@@ -21,7 +21,8 @@ class MCPCrawlResult(BaseModel):
     """Model for crawl results"""
 
     status: StatusType = Field(
-        description="The status of the crawl operation, e.g., 'success' or 'error'."
+        default="success",
+        description="The status of the crawl operation, e.g., 'success' or 'error'.",
     )
     url: str | None = Field(default=None, description="The URL that was crawled.")
     content: str | None = Field(

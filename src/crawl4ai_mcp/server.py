@@ -36,21 +36,11 @@ def handle_crawl_result(result: RunManyReturn) -> MCPCrawlResult:
 
     elif result.success and result.markdown:
         # Extract the content from the result
-        output_content = result.extracted_content or ""
-        if not output_content and result.markdown:
-            output_content = (
-                result.markdown.fit_markdown or result.markdown.raw_markdown
-            )
-
-            # Extract the content from the result
-            return MCPCrawlResult(
-                status="success", url=result.url, content=output_content
-            )
-        else:
-            return MCPCrawlResult(
-                status="error",
-                error_message="The crawler failed to extract any valid content.",
-            )
+        return MCPCrawlResult(
+            status="success",
+            url=result.url,
+            content=result.markdown.fit_markdown or result.markdown.raw_markdown,
+        )
     else:
         return MCPCrawlResult(
             status="error",
@@ -91,6 +81,8 @@ async def google_search(query: str) -> MCPCrawlResult:
     )
     try:
         async with AsyncWebCrawler(config=settings.browser_config) as crawler:
+            # Capture stdout from crawler and redirect to stderr to avoid
+            # conflicts with stdio transport with MCP
             with redirect_stdout(
                 io.TextIOWrapper(sys.stderr.buffer, encoding=sys.stderr.encoding)
             ):
@@ -156,6 +148,8 @@ async def deep_crawl(
     # Explicit lifecycle management for the crawler is recommended for long-running tasks
     crawler = AsyncWebCrawler(config=settings.browser_config)
     try:
+        # Capture stdout from crawler and redirect to stderr to avoid conflicts
+        # with stdio transport with MCP
         with redirect_stdout(
             io.TextIOWrapper(sys.stderr.buffer, encoding=sys.stderr.encoding)
         ):
@@ -220,6 +214,8 @@ async def crawl(urls: list[str]) -> list[MCPCrawlResult]:
     results: list[MCPCrawlResult] = []
     try:
         async with AsyncWebCrawler(config=settings.browser_config) as crawler:
+            # Capture stdout from crawler and redirect to stderr to avoid conflicts
+            # with stdio transport with MCP
             with redirect_stdout(
                 io.TextIOWrapper(sys.stderr.buffer, encoding=sys.stderr.encoding)
             ):

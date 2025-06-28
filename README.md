@@ -1,6 +1,6 @@
 # crawl4ai-mcp
 
-`crawl4ai-mcp` provides a set of web crawling and internet search tools, implemented as a MCP (model context protocol) server. Built using `crawl4ai` and `mcp`, this project enables LLMs to perform internet searches and scrape websites for data, extending their capabilities with real-time web access.
+`crawl4ai-mcp` provides a set of web crawling and internet search tools, implemented as a MCP (model context protocol) server. Built using [`crawl4ai`](https://github.com/unclecode/crawl4ai) and `mcp`, this project enables LLMs to perform internet searches and scrape websites for data, extending their capabilities with real-time web access.
 
 ## Project Structure
 
@@ -33,7 +33,7 @@ crawl4ai-mcp/
 -   **Multi-URL Crawling**: Crawl a list of specified URLs concurrently.
 - **Configurable Settings**: Adjust browser type, headless mode, verbose logging, screenshot capture, word count threshold, cache mode, and content return type (HTML or Markdown).
 - **Stealth Mode**: Includes settings for random user agents, user simulation, timezone, and geolocation to mimic real user behavior.
-- **Flexible Output**: Returns content in either HTML or Markdown format.
+- **Flexible Output**: Returns content in either raw HTML for your LLM to parse, or processed into Markdown.
 
 ## Installation
 
@@ -47,6 +47,11 @@ crawl4ai-mcp/
 1.  **Install with uv:**
     ```bash
     uv tool install crawl4ai-mcp
+    ```
+
+3. **Install playwright browsers** (if not already installed):
+    ```bash
+    playwright install chromium  # or firefox or webkit
     ```
 
 

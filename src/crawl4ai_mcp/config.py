@@ -49,8 +49,8 @@ class Settings(BaseSettings):
         ),
     )
 
+    @computed_field  # type: ignore[prop-decorator]
     @property
-    @computed_field
     def browser_config(self) -> BrowserConfig:
         """Generate BrowserConfig based on the current settings."""
         return BrowserConfig(
