@@ -1,7 +1,7 @@
+from crawl4ai import BrowserConfig
 from pydantic import Field, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from crawl4ai import BrowserConfig
 from .types import BrowserType, CacheModeType
 
 
@@ -49,8 +49,8 @@ class Settings(BaseSettings):
         ),
     )
 
-    @computed_field
     @property
+    @computed_field
     def browser_config(self) -> BrowserConfig:
         """Generate BrowserConfig based on the current settings."""
         return BrowserConfig(

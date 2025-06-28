@@ -1,22 +1,22 @@
 from collections.abc import AsyncIterator
 from urllib.parse import quote
 
-from crawl4ai.types import RunManyReturn
-from mcp.server.fastmcp import FastMCP
 from crawl4ai import (
     AsyncWebCrawler,
-    BFSDeepCrawlStrategy,
     BestFirstCrawlingStrategy,
-    CrawlResult,
-    CrawlerRunConfig,
+    BFSDeepCrawlStrategy,
     CacheMode,
+    CrawlerRunConfig,
+    CrawlResult,
     GeolocationConfig,
     KeywordRelevanceScorer,
 )
 from crawl4ai.models import CrawlResultContainer
+from crawl4ai.types import RunManyReturn
+from mcp.server.fastmcp import FastMCP
 
-from .types import MCPCrawlResult
 from .config import settings
+from .types import MCPCrawlResult
 
 
 def handle_crawl_result(result: RunManyReturn) -> MCPCrawlResult:
